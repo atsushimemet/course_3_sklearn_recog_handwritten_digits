@@ -1,38 +1,50 @@
 # Summary
 - 教育用コンテンツ（講義使用）
-- BMIから糖尿病の進行度合いを予測する
-  - BMI: ヒトの肥満度を表す体格指数。
+- 手書き文字を認識する。
 - 各種概念には立ち入らず、実装をスコープとする。
   - ex. 係数推定値とは、平均二乗誤差とはについては立ち入らない。
 
 # Design
 - Notebook作成
-  - diabetes.csvを読み込む。
-  - データを確認する。
-    - 先頭5行を出力する。
-    - 行数・列数を出力する。
-    - インデックス、列数、欠損値の有無、データ型、使用メモリを一括で出力する。
-    - 記述統計量を出力する。
+  - データの読み込み
+    - sklearnのdatasetsモジュールからload_digits関数を呼び出し、返り値を変数（digits）に代入する。
+  - データの確認
+    - digitsのキーであるimagesの0番目の要素を表示する。
+    - 0番目の要素を下記関数を使用して、画像として表示する。
+      """
+      def output_fig(image: np.ndarray, label: int) -> None:
+          fig = plt.figure(figsize=(3, 3))
+          ax = fig.add_subplot(111)
+          ax.set_axis_off()
+          ax.imshow(image, cmap=plt.cm.gray_r)
+          ax.set_title("Training: %i" % label)
+          plt.show()
+      """
+    - 4枚の画像を下記関数を使用して、表示する。
+      """
+      def output_figs(images: np.ndarray, targets: np.ndarray, slices: int) -> None:
+          _, axes = plt.subplots(nrows=1, ncols=slices, figsize=(10, 3))
+          for ax, image, label in zip(axes, images, targets):
+              ax.set_axis_off()
+              ax.imshow(image, cmap=plt.cm.gray_r)
+              ax.set_title("Training: %i" % label)
+      """
   - データを前処理する。
-    - 糖尿病の進行度合いを表すY列を目的変数として、変数に格納する。
-    - BMIを説明変数として、変数に格納する。
-    - 学習用データとテスト用データに分割する。テスト用データは20人分データの末尾から取り出す。
+    - 画像の次元を変換する。
+      - 1797枚の8x8という2次元の画像(digits.images)を、1797枚の1次元の画像に変換する。 
   - モデルを作成する。
-    - 線形回帰モデルを作成する。
-    - 線形回帰モデルで学習データを学習する。
+    - サポートベクターマシンモデル(SVC)を作成する。決定境界を単純にするために、gammaを0.001に設定する。
+    - 1次元に変換した画像と、それに対応するラベルをそれぞれX, y、テストサイズ0.5としてデータを分割する。
+    - 作成したモデルで学習する。
+    - テストデータを使用して、画像の数字を予測しなさい。
   - 学習結果を評価する。
-    - 係数推定値をprint文で出力する。
-    - 平均二乗誤差をprint文出力する。
-    - 決定係数をprint文出力する。
-    - テストデータの実データを散布図で、予測されたデータを折れ線グラフで表示する。
-      - x軸、y軸の値は表示しない。
+    - output_figsを使用して、予測結果とテストデータの画像を表示する。
 
 # Data
-- [diabetes.tab.txt](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt)
-  - [Diabetes Data](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html)
+- sklearn.datasets.load_digits()
 
 # Lesson
-- Muse
+- Must
   - Designの項目の実装
 - Want
   - 関数化
