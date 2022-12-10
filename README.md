@@ -11,7 +11,7 @@
   - データの確認
     - digitsのキーであるimagesの0番目の要素を表示する。
     - 0番目の要素を下記関数を使用して、画像として表示する。
-      """
+      ```
       def output_fig(image: np.ndarray, label: int) -> None:
           fig = plt.figure(figsize=(3, 3))
           ax = fig.add_subplot(111)
@@ -19,16 +19,16 @@
           ax.imshow(image, cmap=plt.cm.gray_r)
           ax.set_title("Training: %i" % label)
           plt.show()
-      """
+      ```
     - 4枚の画像を下記関数を使用して、表示する。
-      """
+      ```
       def output_figs(images: np.ndarray, targets: np.ndarray, slices: int) -> None:
           _, axes = plt.subplots(nrows=1, ncols=slices, figsize=(10, 3))
           for ax, image, label in zip(axes, images, targets):
               ax.set_axis_off()
               ax.imshow(image, cmap=plt.cm.gray_r)
               ax.set_title("Training: %i" % label)
-      """
+      ```
   - データを前処理する。
     - 画像の次元を変換する。
       - 1797枚の8x8という2次元の画像(digits.images)を、1797枚の1次元の画像に変換する。 
